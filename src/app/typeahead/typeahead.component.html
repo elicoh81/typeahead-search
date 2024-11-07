@@ -1,0 +1,9 @@
+<!-- typeahead.component.html -->
+<mat-form-field appearance="fill">
+    <input matInput (input)="onSearch($event)" placeholder="Search...">
+</mat-form-field>
+<cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+    <mat-list>
+        <mat-list-item *cdkVirtualFor="let result of results">{{ result.name }}</mat-list-item>
+    </mat-list>
+</cdk-virtual-scroll-viewport>
