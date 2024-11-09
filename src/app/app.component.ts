@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
+import { EffectsModule } from '@ngrx/effects';
+import { SearchEffects } from './store/effects';
 
 @Component({
   selector: 'app-root',

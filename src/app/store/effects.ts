@@ -16,7 +16,10 @@ export class SearchEffects {
             debounceTime(300),
             switchMap(action =>
                 this.apiService.search(action.query).pipe(
-                    map(results => loadSearchResultsSuccess({ results })),
+                    map(response => {
+                        console.log("mapping to load search result success", response.items)
+                        return loadSearchResultsSuccess({ repositories: response.items });
+                    }),
                     catchError(error => of(loadSearchResultsFailure({ error })))
                 )
             )

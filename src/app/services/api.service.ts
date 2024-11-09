@@ -1,7 +1,8 @@
 // api.service.ts  
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { GithubRepo, GithubResponse } from './github-repo';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,7 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
-    search(query: string, batchSize = 5): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}?q=${query}&per_page=${batchSize}`);
+    search(query: string, batchSize = 5): Observable<{ items: GithubRepo[] }> {
+        return this.http.get<GithubResponse>(`${this.apiUrl}?q=${query}&per_page=${batchSize}`).pipe(tap(response => console.log('API response:', response)));
     }
 }

@@ -1,19 +1,23 @@
 // reducer.ts  
 import { createReducer, on } from '@ngrx/store';
 import { loadSearchResultsSuccess, saveQuery } from './actions';
+import { GithubRepo } from '../services/github-repo';
 
 export interface SearchState {
-    results: any[];
-    queries: string[];
+    repositories: GithubRepo[];
+    queries: Set<string>;
 }
 
 export const initialState: SearchState = {
-    results: [],
-    queries: []
+    repositories: [],
+    queries: new Set()
 };
 
 export const searchReducer = createReducer(
     initialState,
-    on(loadSearchResultsSuccess, (state, { results }) => ({ ...state, results })),
-    on(saveQuery, (state, { query }) => ({ ...state, queries: [...state.queries, query] }))
+    on(loadSearchResultsSuccess, (state, { repositories }) => {
+        console.log(repositories)
+        return { ...state, repositories };
+    }),
+    on(saveQuery, (state, { query }) => ({ ...state, queries: state.queries.add(query.toLowerCase().trim()) }))
 );
