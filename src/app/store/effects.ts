@@ -15,10 +15,10 @@ export class SearchEffects {
             ofType(loadSearchResults),
             debounceTime(300),
             switchMap(action =>
-                this.apiService.search(action.query).pipe(
+                this.apiService.search(action.query, action.pageNumber).pipe(
                     mergeMap(response => {
                         return [
-                            loadSearchResultsSuccess({ repositories: response.items }),
+                            loadSearchResultsSuccess({ repositories: response.items, append: !!action.append }),
                             saveQuery({ query: action.query })
                         ];
                     }),

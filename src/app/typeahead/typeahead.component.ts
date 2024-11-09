@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatListModule } from '@angular/material/list';
@@ -29,9 +29,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   styleUrls: ['./typeahead.component.scss']
 })
 export class TypeaheadComponent implements OnInit {
+  @ViewChild('searchInput') searchInput!: ElementRef;
   repositories$: Observable<GithubRepo[]>;
   queries$: Observable<string[]>
   myControl = new FormControl('');
+  currentPage = 0;
 
   constructor(private store: Store<{ search: SearchState }>) {
     this.repositories$ = this.store.select(state => state.search.repositories);
@@ -51,7 +53,12 @@ export class TypeaheadComponent implements OnInit {
     return options.filter(option => option.toLowerCase().includes(filterValue));
   }
   onSearch(query: string) {
-    this.store.dispatch(loadSearchResults({ query }));
+    this.store.dispatch(loadSearchResults({ query, pageNumber: this.currentPage }));
+  }
+
+  loadMore() {
+    this.currentPage++;
+    this.store.dispatch(loadSearchResults({ query: this.searchInput.nativeElement.value, pageNumber: this.currentPage, append: true }));
   }
 
 }

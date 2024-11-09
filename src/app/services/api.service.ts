@@ -12,7 +12,7 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
-    search(query: string, batchSize = 20): Observable<{ items: GithubRepo[] }> {
-        return this.http.get<GithubResponse>(`${this.apiUrl}?q=${query}&per_page=${batchSize}`).pipe(tap(response => console.log('API response:', response)));
+    search(query: string, pageNumber: number, batchSize = 20): Observable<{ items: GithubRepo[] }> {
+        return this.http.get<GithubResponse>(`${this.apiUrl}?q=${query}&per_page=${batchSize}&page=${pageNumber}`).pipe(tap(response => console.log('API response:', response)));
     }
 }

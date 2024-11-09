@@ -10,7 +10,7 @@
         </mat-autocomplete>
     </mat-form-field>
 </form>
-<cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+<cdk-virtual-scroll-viewport itemSize="50" class="example-viewport" (scrolledIndexChange)="loadMore()">
     <mat-list>
         <mat-list-item *cdkVirtualFor="let result of repositories$ | async">{{ result.name }}</mat-list-item>
     </mat-list>

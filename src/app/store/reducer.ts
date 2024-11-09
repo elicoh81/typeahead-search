@@ -14,7 +14,7 @@ export const initialState: SearchState = {
 
 export const searchReducer = createReducer(
     initialState,
-    on(loadSearchResultsSuccess, (state, { repositories }) => ({ ...state, repositories })),
+    on(loadSearchResultsSuccess, (state, { repositories, append }) => ({ ...state, repositories: append ? [...state.repositories, ...repositories] : repositories })),
     on(saveQuery, (state, { query }) => {
         if (!state.queries.includes(query)) {
             return { ...state, queries: [...state.queries, query] };
