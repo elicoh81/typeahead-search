@@ -1,6 +1,15 @@
-<mat-form-field appearance="fill">
-    <input matInput (input)="onSearch($event)" placeholder="Search...">
-</mat-form-field>
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <mat-label>Search Term</mat-label>
+        <input type="text" (input)="onSearch($event)" placeholder="Search..." aria-label="Search Term" matInput
+            [formControl]="myControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+            @for (option of queries$ | async; track option) {
+            <mat-option [value]="option">{{option}}</mat-option>
+            }
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
 <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
     <mat-list>
         <mat-list-item *cdkVirtualFor="let result of repositories$ | async">{{ result.name }}</mat-list-item>

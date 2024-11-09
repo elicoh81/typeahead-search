@@ -7,28 +7,35 @@ import { Observable } from 'rxjs';
 import { GithubRepo } from '../services/github-repo';
 import { Store } from '@ngrx/store';
 import { loadSearchResults } from '../store/actions';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { SearchState } from '../store/reducer';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-typeahead',
   standalone: true,
   imports: [
+    FormsModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
     ScrollingModule,
     MatListModule,
     MatInputModule,
-    CommonModule,
-    NgIf
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './typeahead.component.html',
   styleUrls: ['./typeahead.component.scss']
 })
 export class TypeaheadComponent {
-
   repositories$: Observable<GithubRepo[]>;
+  queries$: Observable<string[]>
+  myControl = new FormControl('');
 
-  constructor(private store: Store<{ search: { repositories: GithubRepo[] } }>) {
+  constructor(private store: Store<{ search: SearchState }>) {
     this.repositories$ = this.store.select(state => state.search.repositories);
+    this.queries$ = this.store.select(state => state.search.queries);
   }
 
   onSearch(event: Event) {
