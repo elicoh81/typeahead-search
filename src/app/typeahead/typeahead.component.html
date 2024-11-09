@@ -1,12 +1,12 @@
 <form class="example-form">
     <mat-form-field class="example-full-width">
         <mat-label>Search Term</mat-label>
-        <input type="text" (input)="onSearch($event)" placeholder="Search..." aria-label="Search Term" matInput
-            [formControl]="myControl" [matAutocomplete]="auto">
+        <input type="text" #searchInput (input)="onSearch(searchInput.value)" placeholder="Search..."
+            aria-label="Search Term" matInput [formControl]="myControl" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
-            @for (option of queries$ | async; track option) {
-            <mat-option [value]="option">{{option}}</mat-option>
-            }
+            <mat-option *ngFor="let option of queries$ | async" [value]="option" (onSelectionChange)="onSearch(option)">
+                {{ option }}
+            </mat-option>
         </mat-autocomplete>
     </mat-form-field>
 </form>

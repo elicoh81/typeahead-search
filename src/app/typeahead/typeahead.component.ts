@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
-import { Observable } from 'rxjs';
+import { combineLatestWith, map, Observable, startWith } from 'rxjs';
 import { GithubRepo } from '../services/github-repo';
 import { Store } from '@ngrx/store';
 import { loadSearchResults } from '../store/actions';
@@ -28,7 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   templateUrl: './typeahead.component.html',
   styleUrls: ['./typeahead.component.scss']
 })
-export class TypeaheadComponent {
+export class TypeaheadComponent implements OnInit {
   repositories$: Observable<GithubRepo[]>;
   queries$: Observable<string[]>
   myControl = new FormControl('');
@@ -37,9 +37,20 @@ export class TypeaheadComponent {
     this.repositories$ = this.store.select(state => state.search.repositories);
     this.queries$ = this.store.select(state => state.search.queries);
   }
+  ngOnInit() {
+    this.queries$ = this.myControl.valueChanges.pipe(
+      startWith(''),
+      combineLatestWith(this.queries$),
+      map(([value, options]) => this._filter(value || '', options)),
+    );
+  }
 
-  onSearch(event: Event) {
-    const query = (event.target as HTMLInputElement).value;
+  private _filter(value: string, options: string[]): string[] {
+    const filterValue = value.toLowerCase();
+
+    return options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+  onSearch(query: string) {
     this.store.dispatch(loadSearchResults({ query }));
   }
 
