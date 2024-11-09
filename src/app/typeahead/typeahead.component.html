@@ -1,7 +1,6 @@
 <mat-form-field appearance="fill">
     <input matInput (input)="onSearch($event)" placeholder="Search...">
 </mat-form-field>
-<div *ngFor="let repo of repositories$ | async">{{repo.name}}</div>
 <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
     <mat-list>
         <mat-list-item *cdkVirtualFor="let result of repositories$ | async">{{ result.name }}</mat-list-item>

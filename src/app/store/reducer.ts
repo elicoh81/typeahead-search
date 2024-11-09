@@ -15,9 +15,6 @@ export const initialState: SearchState = {
 
 export const searchReducer = createReducer(
     initialState,
-    on(loadSearchResultsSuccess, (state, { repositories }) => {
-        console.log(repositories)
-        return { ...state, repositories };
-    }),
+    on(loadSearchResultsSuccess, (state, { repositories }) => ({ ...state, repositories })),
     on(saveQuery, (state, { query }) => ({ ...state, queries: state.queries.add(query.toLowerCase().trim()) }))
 );

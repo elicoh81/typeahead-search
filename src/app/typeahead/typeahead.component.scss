@@ -1,0 +1,51 @@
+// typeahead.component.scss  
+
+// General styles for the component  
+:host {
+    display: block;
+    max-width: 600px; // Set a maximum width for the component  
+    margin: 0 auto; // Center the component horizontally  
+    padding: 16px; // Add padding around the component  
+    background-color: #f9f9f9; // Light background color  
+    border-radius: 8px; // Rounded corners  
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); // Subtle shadow for depth  
+}
+
+// Styling for the input field  
+mat-form-field {
+    width: 100%; // Full width  
+    margin-bottom: 16px; // Space below the input field  
+
+    input {
+        font-size: 16px; // Font size for the input  
+        padding: 10px; // Padding inside the input  
+    }
+}
+
+// Styling for the list of repositories  
+.example-viewport {
+    height: 400px; // Set a fixed height for the virtual scroll viewport  
+    border: 1px solid #ddd; // Border around the viewport  
+    border-radius: 4px; // Rounded corners  
+    overflow: auto; // Enable scrolling  
+    background-color: #fff; // White background for the list  
+}
+
+// Styling for each list item  
+mat-list-item {
+    padding: 12px; // Padding inside each list item  
+    border-bottom: 1px solid #eee; // Divider between items  
+    transition: background-color 0.3s; // Smooth transition for hover effect  
+
+    &:hover {
+        background-color: #f1f1f1; // Change background on hover  
+    }
+}
+
+// Optional: Styling for empty state  
+.empty-state {
+    text-align: center; // Center text  
+    color: #888; // Gray color for empty state text  
+    font-size: 14px; // Font size for empty state text  
+    margin-top: 20px; // Space above the empty state text  
+}
