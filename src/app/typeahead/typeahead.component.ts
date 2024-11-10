@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { combineLatestWith, map, Observable, startWith } from 'rxjs';
 import { GithubRepo } from '../services/github-repo';
 import { Store } from '@ngrx/store';
-import { loadSearchResults } from '../store/actions';
+import { loadMore, loadSearchResults } from '../store/actions';
 import { CommonModule } from '@angular/common';
 import { SearchState } from '../store/reducer';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,7 +33,6 @@ export class TypeaheadComponent implements OnInit {
   repositories$: Observable<GithubRepo[]>;
   queries$: Observable<string[]>
   myControl = new FormControl('');
-  currentPage = 0;
 
   constructor(private store: Store<{ search: SearchState }>) {
     this.repositories$ = this.store.select(state => state.search.repositories);
@@ -53,12 +52,11 @@ export class TypeaheadComponent implements OnInit {
     return options.filter(option => option.toLowerCase().includes(filterValue));
   }
   onSearch(query: string) {
-    this.store.dispatch(loadSearchResults({ query, pageNumber: this.currentPage }));
+    this.store.dispatch(loadSearchResults({ query }));
   }
 
   loadMore() {
-    this.currentPage++;
-    this.store.dispatch(loadSearchResults({ query: this.searchInput.nativeElement.value, pageNumber: this.currentPage, append: true }));
+    this.store.dispatch(loadMore({ query: this.searchInput.nativeElement.value }));
   }
 
 }
